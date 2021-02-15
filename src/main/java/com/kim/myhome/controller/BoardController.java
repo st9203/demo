@@ -28,9 +28,11 @@ public class BoardController {
 
 
     @GetMapping("/list")
-    public String list(Model model, @PageableDefault(size = 2) Pageable pageable) {
+    public String list(Model model, @PageableDefault(size = 2) Pageable pageable, @RequestParam(required = false, defaultValue = "") String searchText) {
 
-        Page<Board> list = boardRepository.findAll(pageable);
+//        Page<Board> list = boardRepository.findAll(pageable);
+        Page<Board> list = boardRepository.findByTitleContainingOrContentContaining(searchText, searchText , pageable);
+
         int startPage = Math.max(1 ,list.getPageable().getPageNumber() -4);
         int endPage = Math.min(list.getTotalPages(), list.getPageable().getPageNumber() +4);
 
@@ -64,10 +66,11 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @DeleteMapping("/del")
+    @DeleteMapping("/form/{id}/delete")
     public String delete(@PathVariable ("id")Long id){
         Board board = new Board();
         board.setId(id);
+        System.out.println(id+"번 게시물 삭제.");
         boardRepository.delete(board);
         return "redirect:/board/list";
     }

@@ -30,7 +30,7 @@
     <form class="row g-3 d-flx justify-content-end">
       <div class="col-auto">
         <label for="searchText" class="visually-hidden">검색</label>
-        <input type="password" class="form-control" id="searchText" name="searchText">
+        <input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}">
       </div>
       <div class="col-auto">
         <button type="submit" class="btn btn-light mb-3">검색</button>
@@ -54,16 +54,16 @@
     <nav aria-label="Page navigation example ">
       <ul class="pagination justify-content-center">
         <li class="page-item" th:classappend="${i == list.pageable.pageNumber +1} ? 'disabled'">
-          <a class="page-link" href="#" tabindex="-1" th:href="@{/board/list(page=${list.pageable.pageNumber - 1})}"
+          <a class="page-link" href="#" tabindex="-1" th:href="@{/board/list(page=${list.pageable.pageNumber - 1},searchText=${param.searchText})}"
             aria-disabled="true">Previous</a>
         </li>
 
         <li class="page-item" th:classappend="${i == list.pageable.pageNumber +1} ? 'disabled'" th:each="i : ${#numbers.sequence(startPage, endPage)}">
-              <a class="page-link" href="#" th:text="${i}" th:href="@{/board/list(page=${i - 1})}">1</a>
+              <a class="page-link" href="#" th:text="${i}" th:href="@{/board/list(page=${i - 1},searchText=${param.searchText})}">1</a>
             </li>
 
             <li class="page-item" th:classappend="${list.totalPages == list.pageable.pageNumber +1} ? 'disabled'">
-              <a class="page-link" href="#" th:href="@{/board/list(page=${list.pageable.pageNumber + 1})}">Next</a>
+              <a class="page-link" href="#" th:href="@{/board/list(page=${list.pageable.pageNumber + 1},searchText=${param.searchText})}">Next</a>
             </li>
           </ul>
         </nav>
